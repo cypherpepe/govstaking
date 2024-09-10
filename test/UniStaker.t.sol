@@ -191,7 +191,7 @@ contract UniStakerTest is Test, PercentAssertions {
 }
 
 contract Constructor is UniStakerTest {
-  function test_SetsTheRewardTokenStakeTokenAndRewardNotifier() public {
+  function test_SetsTheRewardTokenStakeTokenAndRewardNotifier() public view {
     assertEq(address(uniStaker.REWARD_TOKEN()), address(rewardToken));
     assertEq(address(uniStaker.STAKE_TOKEN()), address(govToken));
     assertEq(uniStaker.admin(), admin);
@@ -2699,7 +2699,7 @@ contract Withdraw is UniStakerTest {
     assertEq(uniStaker.earningPower(_beneficiary2), _depositAmount2 - _withdrawalAmount2);
   }
 
-  function testFuzz_EmitsAnEventWhenThereIsAWithdrawl(
+  function testFuzz_EmitsAnEventWhenThereIsAWithdrawal(
     address _depositor,
     uint96 _depositAmount,
     address _delegatee,
@@ -3063,7 +3063,7 @@ contract SetAdmin is UniStakerTest {
 contract InvalidateNonce is UniStakerTest {
   using stdStorage for StdStorage;
 
-  function testFuzz_SucessfullyIncrementsTheNonceOfTheSender(address _caller, uint256 _initialNonce)
+  function testFuzz_SuccessfullyIncrementsTheNonceOfTheSender(address _caller, uint256 _initialNonce)
     public
   {
     vm.assume(_caller != address(0));
@@ -3351,7 +3351,7 @@ contract NotifyRewardAmount is UniStakerRewardsTest {
 }
 
 contract LastTimeRewardDistributed is UniStakerRewardsTest {
-  function test_ReturnsZeroBeforeARewardNotificationHasOccurred() public {
+  function test_ReturnsZeroBeforeARewardNotificationHasOccurred() public view {
     assertEq(uniStaker.lastTimeRewardDistributed(), 0);
   }
 

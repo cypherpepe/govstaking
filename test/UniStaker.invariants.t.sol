@@ -56,11 +56,11 @@ contract UniStakerInvariants is Test {
     assertEq(uniStaker.totalStaked(), handler.reduceDelegates(0, this.accumulateSurrogateBalance));
   }
 
-  function invariant_Cumulative_staked_minus_withdrawals_equals_total_stake() public {
+  function invariant_Cumulative_staked_minus_withdrawals_equals_total_stake() public view {
     assertEq(uniStaker.totalStaked(), handler.ghost_stakeSum() - handler.ghost_stakeWithdrawn());
   }
 
-  function invariant_Sum_of_notified_rewards_equals_all_claimed_rewards_plus_rewards_left() public {
+  function invariant_Sum_of_notified_rewards_equals_all_claimed_rewards_plus_rewards_left() public view {
     assertEq(
       handler.ghost_rewardsNotified(),
       rewardToken.balanceOf(address(uniStaker)) + handler.ghost_rewardsClaimed()
@@ -75,7 +75,7 @@ contract UniStakerInvariants is Test {
   }
 
   function invariant_RewardPerTokenAccumulatedCheckpoint_should_be_greater_or_equal_to_the_last_rewardPerTokenAccumulatedCheckpoint(
-  ) public {
+  ) public view {
     assertGe(
       uniStaker.rewardPerTokenAccumulatedCheckpoint(),
       handler.ghost_prevRewardPerTokenAccumulatedCheckpoint()
