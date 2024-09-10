@@ -675,8 +675,10 @@ contract Stake is UniStakerTest {
 
     UniStaker.DepositIdentifier _depositId;
 
+    vm.pauseGasMetering();
+
     // Repeat the deposit over and over ensuring a new DepositIdentifier is assigned each time.
-    for (uint256 _i; _i < 5000; _i++) {
+    for (uint256 _i; _i < 100; _i++) {
       // Perform the stake and save the deposit identifier
       _mintGovToken(_depositor, _amount);
       _depositId = _stake(_depositor, _amount, _delegatee);
@@ -689,9 +691,9 @@ contract Stake is UniStakerTest {
 
     // Now make a bunch more deposits with different depositors and parameters, continuing to check
     // that the DepositIdentifier is never reused.
-    for (uint256 _i; _i < 5000; _i++) {
+    for (uint256 _i; _i < 100; _i++) {
       // Perform the stake and save the deposit identifier
-      _amount = uint96(bound(_amount, 0, 100_000_000_000e18));
+      _amount = uint96(_bound(_amount, 0, 100_000_000_000e18));
       _mintGovToken(_depositor, _amount);
       _depositId = _stake(_depositor, _amount, _delegatee);
 

@@ -81,7 +81,7 @@ contract UniStakerHandler is CommonBase, StdCheats, StdUtils {
   {
     _useActor(_rewardNotifiers, _actorSeed);
     vm.assume(_currentActor != address(0));
-    _amount = bound(_amount, 0, 100_000_000e18);
+    _amount = _bound(_amount, 0, 100_000_000e18);
     ghost_prevRewardPerTokenAccumulatedCheckpoint = uniStaker.rewardPerTokenAccumulatedCheckpoint();
     _mintRewardToken(_currentActor, _amount);
     vm.startPrank(_currentActor);
@@ -100,7 +100,7 @@ contract UniStakerHandler is CommonBase, StdCheats, StdUtils {
 
     _beneficiaries.add(_beneficiary);
     _delegates.add(_delegatee);
-    _amount = uint96(bound(_amount, 0, 100_000_000e18));
+    _amount = uint96(_bound(_amount, 0, 100_000_000e18));
 
     // assume user has stake amount
     _mintStakeToken(_currentActor, _amount);
@@ -128,7 +128,7 @@ contract UniStakerHandler is CommonBase, StdCheats, StdUtils {
     UniStaker.DepositIdentifier _depositId =
       UniStaker.DepositIdentifier.wrap(_getActorRandDepositId(_actorDepositSeed));
     (uint96 _balance,,,) = uniStaker.deposits(_depositId);
-    _amount = uint96(bound(_amount, 0, _balance));
+    _amount = uint96(_bound(_amount, 0, _balance));
     vm.startPrank(_currentActor);
     stakeToken.approve(address(uniStaker), _amount);
     uniStaker.stakeMore(_depositId, _amount);
@@ -147,7 +147,7 @@ contract UniStakerHandler is CommonBase, StdCheats, StdUtils {
     UniStaker.DepositIdentifier _depositId =
       UniStaker.DepositIdentifier.wrap(_getActorRandDepositId(_actorDepositSeed));
     (uint96 _balance,,,) = uniStaker.deposits(_depositId);
-    _amount = uint96(bound(_amount, 0, _balance));
+    _amount = uint96(_bound(_amount, 0, _balance));
     vm.startPrank(_currentActor);
     uniStaker.withdraw(_depositId, _amount);
     vm.stopPrank();
@@ -163,7 +163,7 @@ contract UniStakerHandler is CommonBase, StdCheats, StdUtils {
   }
 
   function warpAhead(uint256 _seconds) public countCall("warpAhead") doCheckpoints {
-    _seconds = bound(_seconds, 0, uniStaker.REWARD_DURATION() * 2);
+    _seconds = _bound(_seconds, 0, uniStaker.REWARD_DURATION() * 2);
     skip(_seconds);
   }
 
