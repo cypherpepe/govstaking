@@ -7,7 +7,7 @@
     "uniswap-periphery/=lib/v3-periphery/contracts",
     "@uniswap/v3-core=lib/v3-core",
   ]
-  solc_version = "0.8.23"
+  solc_version = "0.8.26"
   verbosity = 3
 
 [profile.ci]
