@@ -6,7 +6,6 @@ import {
   GovernanceStaker,
   DelegationSurrogate,
   IERC20,
-  IERC20Delegates,
   IEarningPowerCalculator
 } from "src/GovernanceStaker.sol";
 import {GovernanceStakerHarness} from "test/harnesses/GovernanceStakerHarness.sol";
@@ -236,7 +235,7 @@ contract Constructor is GovernanceStakerTest {
     vm.assume(_admin != address(0) && _earningPowerCalculator != address(0));
     GovernanceStaker _govStaker = new GovernanceStaker(
       IERC20(_rewardToken),
-      IERC20Delegates(_stakeToken),
+      IERC20(_stakeToken),
       IEarningPowerCalculator(_earningPowerCalculator),
       _maxBumpTip,
       _admin

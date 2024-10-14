@@ -4,7 +4,6 @@ pragma solidity ^0.8.23;
 import {DelegationSurrogate} from "src/DelegationSurrogate.sol";
 import {INotifiableRewardReceiver} from "src/interfaces/INotifiableRewardReceiver.sol";
 import {IEarningPowerCalculator} from "src/interfaces/IEarningPowerCalculator.sol";
-import {IERC20Delegates} from "src/interfaces/IERC20Delegates.sol";
 import {IERC20} from "openzeppelin/token/ERC20/IERC20.sol";
 import {SafeERC20} from "openzeppelin/token/ERC20/utils/SafeERC20.sol";
 import {Multicall} from "openzeppelin/utils/Multicall.sol";
@@ -166,7 +165,7 @@ contract GovernanceStaker is INotifiableRewardReceiver, Multicall, EIP712, Nonce
   IERC20 public immutable REWARD_TOKEN;
 
   /// @notice Delegable governance token which users stake to earn rewards.
-  IERC20Delegates public immutable STAKE_TOKEN;
+  IERC20 public immutable STAKE_TOKEN;
 
   /// @notice Length of time over which rewards sent to this contract are distributed to stakers.
   uint256 public constant REWARD_DURATION = 30 days;
@@ -226,7 +225,7 @@ contract GovernanceStaker is INotifiableRewardReceiver, Multicall, EIP712, Nonce
   /// @param _admin Address which will have permission to manage rewardNotifiers.
   constructor(
     IERC20 _rewardToken,
-    IERC20Delegates _stakeToken,
+    IERC20 _stakeToken,
     IEarningPowerCalculator _earningPowerCalculator,
     uint256 _maxBumpTip,
     address _admin
@@ -356,7 +355,7 @@ contract GovernanceStaker is INotifiableRewardReceiver, Multicall, EIP712, Nonce
     bytes32 _r,
     bytes32 _s
   ) external returns (DepositIdentifier _depositId) {
-    try STAKE_TOKEN.permit(msg.sender, address(this), _amount, _deadline, _v, _r, _s) {} catch {}
+    // try STAKE_TOKEN.permit(msg.sender, address(this), _amount, _deadline, _v, _r, _s) {} catch {}
     _depositId = _stake(msg.sender, _amount, _delegatee, _beneficiary);
   }
 
@@ -434,7 +433,7 @@ contract GovernanceStaker is INotifiableRewardReceiver, Multicall, EIP712, Nonce
     Deposit storage deposit = deposits[_depositId];
     _revertIfNotDepositOwner(deposit, msg.sender);
 
-    try STAKE_TOKEN.permit(msg.sender, address(this), _amount, _deadline, _v, _r, _s) {} catch {}
+    // try STAKE_TOKEN.permit(msg.sender, address(this), _amount, _deadline, _v, _r, _s) {} catch {}
     _stakeMore(deposit, _depositId, _amount);
   }
 
